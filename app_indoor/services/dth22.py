@@ -25,7 +25,7 @@ class DTH22():
             print(f"temperature: {temperature} \n humidity: {humidity}")
         else:
             print("Failed to retrieve data from humidity sensor")
-            return temperature, humidity
+        return temperature, humidity
 
 
 
