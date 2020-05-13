@@ -9,6 +9,7 @@ from flask import Flask
 from flask import render_template, session
 from flask_socketio import SocketIO, send, emit
 from services.dth22 import DTH22
+from services.gpio_control import Gpio_controller
 import threading
 import argparse
 import datetime
@@ -77,22 +78,24 @@ def test_message(message):
          {'data': message['data'], 'count': session['receive_count']})
 
 
-
+dth_sensor = DTH22()
 @socketio.on('get_dh22')
 def dh22():
-	dth_sensor = DTH22()
 	temp, hum = dth_sensor.read_values()
 	# temp = 20.033
 	# hum = 70.243
 	print(f"temperatura {temp} humedad {hum}")
 	emit('sensor_data', {'temperatura': str(temp), 'humedad': str(hum)})
 
+light_control = Gpio_controller()
 @socketio.on('light_auto')
 def auto_light(message):
 	if message:
 		print("Encendido automatico Prendido!!!!")
+		light_control.turn_on()
 	else:
 		print("Apagado el encendido automatico")
+		light_control.turn_off()
 
 
 
