@@ -51,7 +51,7 @@ def test_connect():
 	while True:
 		temp, hum = dth_sensor.read_values()
 		print(f"temperatura {temp} humedad {hum}")
-	# emit('my response', {'data': 'Connected'})
+		emit('dth22 response', {'temperatura': str(temp), 'humedad': str(hum)})
 
 @socketio.on('disconnect')
 def test_disconnect():
