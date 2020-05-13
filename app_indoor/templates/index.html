@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>Pi Video Surveillance</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" />
+  </head>
+  <body>
+    <div id="general">
+        <div id="datetime">
+            <section>
+            <script>
+                function startTime() {
+                  var today = new Date();
+                //   var d = today.getDay();
+                //   var M = today.getMonth();
+                //   var y = today.getFullYear();
+                //   var h = today.getHours();
+                //   var m = today.getMinutes();
+                //   var s = today.getSeconds();
+                //   m = checkTime(m);
+                //   s = checkTime(s);
+                var d = today.toString();
+                  document.getElementById('datetime').innerHTML = d;
+                //   d + "/" + M + "/" + y + "-" + h + ":" + m + ":" + s;
+                  var t = setTimeout(startTime, 500);
+                }
+                function checkTime(i) {
+                  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+                  return i;
+                }
+                startTime();
+            </script>
+            </section>
+        </div>
+        <div id="sensores">
+            <section>
+            <h1>Sensors</h1>
+            </section>
+        </div>
+
+        <!-- SDN para la conexion a socket io -->
+        <h2> </h2>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" charset="utf-8"></script>
+        <script>
+        const socket = io();
+        socket.on('my response', function(msg){
+            
+        })
+        </script> 
+        
+        
+        <form action="/video_streaming">
+            <button type="submit" id="video_streaming">Watch Streaming Video</button>
+        </form>
+    </div>
+  
+</body>
+</html>

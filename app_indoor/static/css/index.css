@@ -1,0 +1,29 @@
+*{
+    margin:0px;
+    padding:0px;
+}
+
+div#general{
+    margin: auto;
+    margin-top: 50px;
+    width: 960px;
+    height: 800px;
+    background-color: rgb(148, 190, 176);
+}
+
+div#datetime{
+    /* float: right; Mover a la izquierda */
+    width: 500px;
+    height: 100px;
+    margin: 0px auto;
+    background-color: yellowgreen;
+}
+
+div#sensores{
+    /* float: right; */
+    /* float: left; Mover a la izquierda */
+    margin-top: 20px;
+    width: 800px;
+    height: 300px;
+    background-color: rgb(100, 160, 95);
+}
