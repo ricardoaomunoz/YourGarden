@@ -50,10 +50,15 @@
           $('#humedad').text(msg.humedad);
         })
 
-        var lightbox = document.getElementById("light_auto");
-        lightbox.addEventListener("change", function(){
+        var lightautobox = document.getElementById("light_auto");
+        lightautobox.addEventListener("change", function(){
           socket.emit("light_auto", Number(this.checked));
         })
+
+        var lightbox = document.getElementById("light");
+        lightbox.addEventListener("change", function(){
+          socket.emit("light", Number(this.checked));
+        }) 
 
 
 
@@ -93,7 +98,7 @@
           </label><br><br>
           <h2>Light</h2>
           <label class="switch">
-            <input id="Light" type="checkbox" checked>
+            <input id="light" type="checkbox" checked>
             <span class="slider"></span>
           </label>
 

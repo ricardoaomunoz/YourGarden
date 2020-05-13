@@ -92,9 +92,18 @@ light_control = Gpio_controller()
 def auto_light(message):
 	if message:
 		print("Encendido automatico Prendido!!!!")
-		light_control.turn_on()
+		# light_control.turn_on()
 	else:
 		print("Apagado el encendido automatico")
+		# light_control.turn_off()
+
+@socketio.on('light')
+def auto_light(message):
+	if message:
+		print("Encendiendo Luz!!!!")
+		light_control.turn_on()
+	else:
+		print("Apagado Luz")
 		light_control.turn_off()
 
 
