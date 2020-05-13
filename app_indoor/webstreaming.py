@@ -6,9 +6,9 @@ from pyimagesearch.motion_detection import SingleMotionDetector
 from imutils.video import VideoStream
 from flask import Response
 from flask import Flask
-from flask import render_template
-from flask_socketio import SocketIO, send
-from services.dth22 import DTH22
+from flask import render_template, session
+from flask_socketio import SocketIO, send, emit
+# from services.dth22 import DTH22
 import threading
 import argparse
 import datetime
@@ -35,6 +35,8 @@ socketio = SocketIO(app)  #SOCKETIO
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
+USERS = 0
+
 @app.route('/')
 def index():
 	return render_template("index.html", now = datetime.datetime.now())
@@ -44,20 +46,59 @@ def video_streaming():
 	# return the rendered template
 	return render_template("video_s.html")
 
+# @socketio.on('connect')
+# def test_connect():
+# 	print("CONNECTED!!!!")
+# 	dth_sensor = DTH22()
+# 	while True:
+# 		temp, hum = dth_sensor.read_values()
+# 		print(f"temperatura {temp} humedad {hum}")
+# 		send(f"temperatura {temp} humedad {hum}")
+# 		# emit('dth22 response', {'temperatura': str(temp), 'humedad': str(hum)})
+		# time.sleep(3)
+
+
+
 @socketio.on('connect')
 def test_connect():
-	print("CONNECTED!!!!")
-	dth_sensor = DTH22()
-	while True:
-		temp, hum = dth_sensor.read_values()
-		print(f"temperatura {temp} humedad {hum}")
-		send(f"temperatura {temp} humedad {hum}")
-		# emit('dth22 response', {'temperatura': str(temp), 'humedad': str(hum)})
-		time.sleep(3)
+    print("CONECTED!!!!!!!")
+    emit('my_response', {'data': 'Connected', 'count': 0})
 
 @socketio.on('disconnect')
 def test_disconnect():
     print('Client disconnected')
+
+@socketio.on('my_event')
+def test_message(message):
+	# USERS += 1
+	print("Start new Session!!")
+	session['receive_count'] = session.get('receive_count', 0) + 1
+	emit('my_response',
+         {'data': message['data'], 'count': session['receive_count']})
+
+
+
+@socketio.on('get_dh22')
+def dh22():
+# 	dth_sensor = DTH22()
+# 	temp, hum = dth_sensor.read_values()
+	temp = 20.033
+	hum = 70.243
+	print(f"temperatura {temp} humedad {hum}")
+	emit('sensor_data', {'temperatura': str(temp), 'humedad': str(hum)})
+
+@socketio.on('light_auto')
+def auto_light(message):
+	if message:
+		print("Encendido automatico Prendido!!!!")
+	else:
+		print("Apagado el encendido automatico")
+
+
+
+
+
+
 
 
 def detect_motion(frameCount):
