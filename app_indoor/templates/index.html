@@ -34,16 +34,18 @@
         <div id="sensores">
             <section>
             <h1>Sensors</h1>
+            <ul id="messages"></ul>
             </section>
         </div>
+        
 
         <!-- SDN para la conexion a socket io -->
-        <h2> </h2>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" charset="utf-8"></script>
         <script>
         const socket = io();
         socket.on('dth22 response', function(msg){
-          document.getElementById("sensores").innerHTML = msg;
+          $('#messages').append('<li>' + msg + '</li>')
+          // document.getElementById("sensores").innerHTML = msg;
             
         })
         </script> 

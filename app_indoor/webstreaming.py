@@ -7,7 +7,7 @@ from imutils.video import VideoStream
 from flask import Response
 from flask import Flask
 from flask import render_template
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, send
 from services.dth22 import DTH22
 import threading
 import argparse
@@ -51,7 +51,8 @@ def test_connect():
 	while True:
 		temp, hum = dth_sensor.read_values()
 		print(f"temperatura {temp} humedad {hum}")
-		emit('dth22 response', {'temperatura': str(temp), 'humedad': str(hum)})
+		send(f"temperatura {temp} humedad {hum}")
+		# emit('dth22 response', {'temperatura': str(temp), 'humedad': str(hum)})
 		time.sleep(3)
 
 @socketio.on('disconnect')
