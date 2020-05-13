@@ -8,7 +8,7 @@ from flask import Response
 from flask import Flask
 from flask import render_template, session
 from flask_socketio import SocketIO, send, emit
-# from services.dth22 import DTH22
+from services.dth22 import DTH22
 import threading
 import argparse
 import datetime
