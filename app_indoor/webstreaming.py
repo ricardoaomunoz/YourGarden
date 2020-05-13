@@ -52,6 +52,7 @@ def test_connect():
 		temp, hum = dth_sensor.read_values()
 		print(f"temperatura {temp} humedad {hum}")
 		emit('dth22 response', {'temperatura': str(temp), 'humedad': str(hum)})
+		time.sleep(3)
 
 @socketio.on('disconnect')
 def test_disconnect():
