@@ -63,7 +63,7 @@ def video_streaming():
 @socketio.on('connect')
 def test_connect():
 	print("CONECTED!!!!!!!")
-	emit('my_response', {'data': 'Connected', 'count': 0})
+	emit('my_response', {'data': 'Connected', 'count': 0, 'light_state': LIGHT_STATE}})
 	# emit('light_status', {'light_state': LIGHT_STATE})
 
 @socketio.on('disconnect')
@@ -75,8 +75,7 @@ def test_message(message):
 	# USERS += 1
 	print("Start new Session!!")
 	session['receive_count'] = session.get('receive_count', 0) + 1
-	emit('my_response',
-         {'data': message['data'], 'count': session['receive_count']})
+	emit('light_status', {'light_state': LIGHT_STATE})
 
 
 dth_sensor = DTH22()
