@@ -64,7 +64,7 @@ def video_streaming():
 def test_connect():
 	print("CONECTED!!!!!!!")
 	emit('my_response', {'data': 'Connected', 'count': 0})
-	emit('light_status', {'light_state': LIGHT_STATE})
+	# emit('light_status', {'light_state': LIGHT_STATE})
 
 @socketio.on('disconnect')
 def test_disconnect():
@@ -86,7 +86,7 @@ def dh22():
 	temp = 20.033
 	hum = 70.243
 	print(f"temperatura {temp} humedad {hum}")
-	emit('sensor_data', {'temperatura': str(temp), 'humedad': str(hum)})
+	emit('sensor_data', {'temperatura': str(temp), 'humedad': str(hum)}, broadcast=True)
 
 
 @socketio.on('light_auto')
