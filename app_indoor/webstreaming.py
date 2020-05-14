@@ -63,7 +63,7 @@ def video_streaming():
 @socketio.on('connect')
 def test_connect():
 	print("CONECTED!!!!!!!")
-	emit('my_response', {'data': 'Connected', 'count': 0, 'light_state': LIGHT_STATE}})
+	emit('my_response', {'data': 'Connected', 'count': 0, 'light_state': LIGHT_STATE})
 	# emit('light_status', {'light_state': LIGHT_STATE})
 
 @socketio.on('disconnect')
