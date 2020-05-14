@@ -87,7 +87,7 @@ def dh22():
 	print(f"temperatura {temp} humedad {hum}")
 	emit('sensor_data', {'temperatura': str(temp), 'humedad': str(hum)})
 
-light_control = Gpio_controller()
+
 @socketio.on('light_auto')
 def auto_light(message):
 	if message:
@@ -97,14 +97,17 @@ def auto_light(message):
 		print("Apagado el encendido automatico")
 		# light_control.turn_off()
 
+light_control = Gpio_controller()
 @socketio.on('light')
-def auto_light(message):
+def light(message):
 	if message:
 		print("Encendiendo Luz!!!!")
 		light_control.turn_on()
+		# emit('light_status', {'data':'on'}, broadcast=True)
 	else:
 		print("Apagado Luz")
 		light_control.turn_off()
+		# emit('light_status', {'data':'off'}, broadcast=True)
 
 
 
