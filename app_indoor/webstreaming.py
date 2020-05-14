@@ -36,7 +36,7 @@ socketio = SocketIO(app)  #SOCKETIO
 vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
-USERS = 0
+LIGHT_STATE = False
 
 @app.route('/')
 def index():
@@ -62,8 +62,9 @@ def video_streaming():
 
 @socketio.on('connect')
 def test_connect():
-    print("CONECTED!!!!!!!")
-    emit('my_response', {'data': 'Connected', 'count': 0})
+	print("CONECTED!!!!!!!")
+	emit('my_response', {'data': 'Connected', 'count': 0})
+	emit('light_status', {'light_state': LIGHT_STATE})
 
 @socketio.on('disconnect')
 def test_disconnect():
@@ -103,11 +104,13 @@ def light(message):
 	if message:
 		print("Encendiendo Luz!!!!")
 		light_control.turn_on()
-		# emit('light_status', {'data':'on'}, broadcast=True)
+		LIGHT_STATE = True
+		emit('light_status', {'light_state': LIGHT_STATE}, broadcast=True)
 	else:
 		print("Apagado Luz")
 		light_control.turn_off()
-		# emit('light_status', {'data':'off'}, broadcast=True)
+		LIGHT_STATE = False
+		emit('light_status', {'light_state': LIGHT_STATE}, broadcast=True)
 
 
 

@@ -35,6 +35,7 @@
         socket.on('my_response', function(msg) {
             console.log("socket on response");
             $('#log').append('<br>' + $('<div/>').text('Received #' + msg.count + ': ' + msg.data).html());
+          
             // if (cb)
             //     cb();
         });
@@ -60,9 +61,10 @@
           socket.emit("light", Number(this.checked));
         }) 
 
-        // socket.on('light_status', function(msg){
-
-        // })
+        socket.on('light_status', function(msg){
+          console.log(msg.light_state);
+          $('#light').prop('checked', msg.light_state);
+        })
 
 
 
