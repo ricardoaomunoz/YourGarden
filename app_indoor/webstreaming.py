@@ -85,9 +85,9 @@ def test_message(message):
 dth_sensor = DTH22()
 @socketio.on('get_dh22')
 def dh22():
-	# temp, hum = dth_sensor.read_values()
-	temp = 20.033
-	hum = 70.243
+	temp, hum = dth_sensor.read_values()
+	# temp = 20.033
+	# hum = 70.243
 	print(f"temperatura {temp} humedad {hum}")
 	emit('sensor_data', {'temperatura': str(temp), 'humedad': str(hum)}, broadcast=True)
 
