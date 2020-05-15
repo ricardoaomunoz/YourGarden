@@ -74,6 +74,7 @@ def test_disconnect():
 def test_message(message):
 	# USERS += 1
 	print("Start new Session!!")
+	print(f"evento my {message['data']}")
 	# session['receive_count'] = session.get('receive_count', 0) + 1
 	emit('light_status', {'light_state': LIGHT_STATE})
 
