@@ -75,7 +75,7 @@ def test_message(message):
 	# USERS += 1
 	print("Start new Session!!")
 	print(f"evento my {message['data']} y light state es {LIGHT_STATE}:")
-	# session['receive_count'] = session.get('receive_count', 0) + 1
+	session['receive_count'] = session.get('receive_count', 0) + 1
 	emit('light_status', {'light_state': LIGHT_STATE})
 	emit('my_response',
          {'data': message['data'], 'count': session['receive_count']})
