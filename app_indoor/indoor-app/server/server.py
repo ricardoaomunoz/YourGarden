@@ -96,14 +96,14 @@ def on_active_user(data):
     print(f"active user  {data}  #####")
     user = data.get('username')
     emit('user_activated', {'user': user}, broadcast=True)
-    emit('time_setter', read_jsonfile(), broadvast=True)
+    emit('time_setter', read_jsonfile(), broadcast=True)
 
 
 @socketIo.on('time-light')
 def set_time_light(data):
     print(f"###### SEt Time LIGHT ######## {data}")
     modifyJson_file(data["timer"])
-    emit('time_setter', read_jsonfile(), broadvast=True)
+    emit('time_setter', read_jsonfile(), broadcast=True)
 
 
 
