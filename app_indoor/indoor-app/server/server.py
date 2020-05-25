@@ -126,4 +126,4 @@ def new_user(msg):
 
 
 if __name__ == '__main__':
-    socketIo.run(app)
+    socketIo.run(app, host="192.168.1.100")
