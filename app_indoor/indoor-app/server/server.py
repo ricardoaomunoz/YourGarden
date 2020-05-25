@@ -1,56 +1,64 @@
+async_mode = None
+
+if async_mode is None:
+    try:
+        import eventlet
+        async_mode = 'eventlet'
+    except ImportError:
+        pass
+
+    if async_mode is None:
+        try:
+            from gevent import monkey
+            async_mode = 'gevent'
+        except ImportError:
+            pass
+
+    if async_mode is None:
+        async_mode = 'threading'
+
+    print('async_mode is ' + async_mode)
+
+# monkey patching is necessary because this application uses a background
+# thread
+if async_mode == 'eventlet':
+    import eventlet
+    eventlet.monkey_patch()
+elif async_mode == 'gevent':
+    from gevent import monkey
+    monkey.patch_all()
 
 
 
-# from flask import Flask, render_template, request
-# from flask_socketio import SocketIO, send, emit
-# from flask import render_template, session
-# from flask_cors import CORS
-
-
-# app = Flask('indoor-app')
-# app = Flask(__name__.split('.')[0])
-# app.config['SECRET_KEY'] = 'secret!'
-# socketio = SocketIO(app)
-# CORS(app)
-# # socketio.init_app(app, resources={r"/*": {"origins":"*"}}, headers=['Content-Type'], expose_headers=['Access-Control-Allow-Origin'], supports_credentials=True)
-# users = {}
-
-
-# @socketio.on('usernamesss')
-# def new_user(msg):
-#     print(f"mensaje {msg}")
-#     # user = {
-#     #     "name": msg,
-#     #     "id": request.namespace.socket.sessid
-#     # }
-#     # users[request.namespace.socket.sessid] = user
-#     # emit('connected', user, broadcast=True)
-#     # emit('users', users, broadcast=True)
-# 	# emit('light_status', {'light_state': LIGHT_STATE})
-
-
-# @socketio.on('disconnect')
-# def test_disconnect():
-#     print('Client disconnected')
-
-
-
-# # if __name__ == '__main__':
-# socketio.run(app, host="localhost", port=5010, debug=True, use_reloader=False )
 
 
 from flask import Flask, jsonify, request, session
 from flask_socketio import SocketIO, send, emit
 import json
+from threading import Thread
+import time
+from services.dth22 import DTH22
+from services.gpio_control import Gpio_controller
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecret'
 
-socketIo = SocketIO(app, cors_allowed_origins="*")
+socketIo = SocketIO(app, cors_allowed_origins="*", async_mode=async_mode)
+thread = None
 
 app.debug = True
 app.host = 'localhost'
 users = {}
+LightControler = Gpio_controller()
+
+def send_dth22_info():
+    """Example of how to send server generated events to clients."""
+    counter = 0
+    while True:
+        time.sleep(4)
+        print(f"Es el thread {counter}")
+        counter += 1
+
 
 
 def read_jsonfile():
@@ -70,8 +78,20 @@ def modifyJson_file(data):
         json.dump(data, config_file)
   
 
-
-
+def turn_light():
+    while True:
+        time_light = read_jsonfile()
+        time_actual = time.strftime('%H:%M')
+        if time_actual >= time_light["turn_on"]:
+            print("LIGHT ON")
+            LightControler.turn_on()
+        elif time_actual < time_light["turn_off"]:
+            print("LIGHT ON")
+            LightControler.turn_on()
+        else:
+            print("LIGHT OFF")
+            LightControler.turn_off()
+        time.sleep(1)
 
 
 
@@ -126,4 +146,8 @@ def new_user(msg):
 
 
 if __name__ == '__main__':
-    socketIo.run(app, host="192.168.1.100")
+    if thread is None:
+        thread = Thread(target=send_dth22_info)
+        # thread.daemon = True
+        thread.start()
+    socketIo.run(app)#, host="192.168.1.100")
