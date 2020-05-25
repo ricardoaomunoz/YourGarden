@@ -50,19 +50,23 @@ app.debug = True
 app.host = 'localhost'
 users = {}
 LightControler = Gpio_controller()
+Sensor1 = DTH22()
 
 def send_dth22_info():
     """Example of how to send server generated events to clients."""
     counter = 0
     while True:
+        temp, humd = Sensor1.read_values()
+        data = {'temperature': float("{:.2f}".format(temp)), 'humidity': float("{:.2f}".format(humd))}
+        print(f"emitiendo data de sensor: {data}")
+        emit('sensor1_setter', data, broadcast=True)
         time.sleep(4)
-        print(f"Es el thread {counter}")
-        counter += 1
+
 
 
 
 def read_jsonfile():
-    with open('config.json', 'r') as config_file:
+    with open('/home/pi/Indoor_cultivation/app_indoor/indoor-app/server/config.json', 'r') as config_file:
         data = json.load(config_file)
         time_light = {
             "turn_on": data['light_time'][0],
@@ -72,7 +76,7 @@ def read_jsonfile():
 
 def modifyJson_file(data):
     print(f"modify json {data}")
-    with open('config.json', 'w') as config_file:
+    with open('/home/pi/Indoor_cultivation/app_indoor/indoor-app/server/config.json', 'w') as config_file:
         # data = json.load(config_file)
         data= {"light_time" : data}
         json.dump(data, config_file)
@@ -151,6 +155,6 @@ if __name__ == '__main__':
         thread.daemon = True
         thread1 = Thread(target=turn_light)
         thread1.daemon = True
-        # thread.start()
+        thread.start()
         thread1.start()
-    socketIo.run(app, host="192.168.1.100")
+    socketIo.run(app, host="192.168.1.99", port=5000)
