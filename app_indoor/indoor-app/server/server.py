@@ -149,5 +149,7 @@ if __name__ == '__main__':
     if thread is None:
         thread = Thread(target=send_dth22_info)
         # thread.daemon = True
+        thread1 = Thread(target=turn_light)
         thread.start()
+        thread1.start()
     socketIo.run(app)#, host="192.168.1.100")
