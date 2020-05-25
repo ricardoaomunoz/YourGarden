@@ -19,7 +19,7 @@ const username = prompt("What is your username");
 //   transports: ["websocket", "polling"]
 // });
 
-let endPoint = "http://localhost:5000";
+let endPoint = "http://192.168.1.100:5000";
 let socket = io.connect(`${endPoint}`);
 
 export const TimerSets = React.createContext();
