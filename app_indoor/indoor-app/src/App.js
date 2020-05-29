@@ -9,9 +9,11 @@ import  { Timer }  from './components/SetTimer';
 import { NoMatch } from './NoMatch';
 import { render } from '@testing-library/react';
 import { ThemeContext } from 'styled-components';
-import header_img from './components/images/header_img.jpg'
+// import header_img from './components/images/header_img.jpg'
 import Home from './components/Home'
 import TimeSetter from './components/TimeSetter'
+import Carousel from './components/CarouselImg'
+import Sensors from './components/Sensors'
 
 const username = prompt("What is your username");
 
@@ -19,9 +21,8 @@ const username = prompt("What is your username");
 //   transports: ["websocket", "polling"]
 // });
 
-let endPoint = "http://192.168.1.100:5000";
+let endPoint = "http://192.168.1.99:5000";
 let socket = io.connect(`${endPoint}`);
-
 export const TimerSets = React.createContext();
 console.log("io connected");
 
@@ -35,7 +36,9 @@ class App extends Component{
       automatic: true,
       turnOn: "",
       turnOff: "",
-      users: []
+      users: [],
+      temperature: -10,
+      humidity: 20
     }
     this.setTime = this.setTime.bind(this)
   }
@@ -79,6 +82,15 @@ class App extends Component{
         this.setState({ users: [...users, user] });
       }
     })
+
+    socket.on('sensor1_setter', (data) => {
+      console.log("temp data")
+      console.log(data)
+      const temp = data['temperature']
+      const humd = data['humidity']
+      const {temperature, humidity} = this.state
+      this.setState({ temperature: temp, humidity: humd})
+    })
   }
     // llegan todos
     // socket.on("users", userss => {
@@ -97,7 +109,7 @@ class App extends Component{
 
 
     render(){
-      const {userName, users, turnOn, turnOff, automatic} = this.state
+      const {userName, users, turnOn, turnOff, automatic, temperature, humidity} = this.state
       return (
         <Container className='App'>
           <Row className="justify-content-md-center">
@@ -113,7 +125,8 @@ class App extends Component{
           </Row>
           <Row className="justify-content-md-center">
             <Col>
-              <Image src={header_img} fluid />
+              <Carousel />
+              {/* <Image src={header_img} fluid /> */}
             </Col>
           </Row>
           <Row className="justify-content-md-center">
@@ -130,8 +143,14 @@ class App extends Component{
               automatic = {automatic}
               setTime={this.setTime}
             />
-            <Col></Col>
+            <Sensors 
+              temperature={temperature}
+              humidity={humidity}
+              />
           </Row>
+          <br></br>
+          <br></br>
+          <br></br>
         </Container>
 
       
