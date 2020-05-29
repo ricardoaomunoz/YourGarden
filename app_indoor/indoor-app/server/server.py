@@ -52,15 +52,7 @@ users = {}
 LightControler = Gpio_controller()
 Sensor1 = DTH22()
 
-def send_dth22_info():
-    """Example of how to send server generated events to clients."""
-    counter = 0
-    while True:
-        temp, humd = Sensor1.read_values()
-        data = {'temperature': float("{:.2f}".format(temp)), 'humidity': float("{:.2f}".format(humd))}
-        print(f"emitiendo data de sensor: {data}")
-        socketIo.emit('sensor1_setter', data, broadcast=True)
-        time.sleep(4)
+
 
 
 
@@ -86,15 +78,21 @@ def turn_light():
     while True:
         time_light = read_jsonfile()
         time_actual = time.strftime('%H:%M')
-        if time_actual >= time_light["turn_on"]:
-            print("LIGHT ON")
-            LightControler.turn_on()
-        elif time_actual < time_light["turn_off"]:
-            print("LIGHT ON")
-            LightControler.turn_on()
+        if time_light["turn_on"] > time_light["turn_off"]:
+            if (time_actual >= time_light["turn_on"] and time_actual < "23:59") or (time_actual < time_light["turn_off"]):
+                print("LIGHT ON")
+                LightControler.turn_on()
+            else:
+                print("LIGHT OFF")
+                LightControler.turn_off()
         else:
-            print("LIGHT OFF")
-            LightControler.turn_off()
+            if time_actual >= time_light["turn_on"] and time_actual < time_light["turn_off"]:
+                print("LIGHT ON")
+                LightControler.turn_on()
+            else:
+                print("LIGHT OFF")
+                LightControler.turn_off()
+
         time.sleep(1)
 
 
@@ -110,10 +108,6 @@ def handleMessage(msg):
 def test_connect():
     print("CONECTED!!!!!!!")
     retrieve_active_users()
-    #thread = Thread(target=send_dth22_info)
-    #thread.daemon = True
-    #thread.start()
-    #send_dth22_info()
 
 def retrieve_active_users():
     emit('retrieve_active_users', broadcast=True)
@@ -126,6 +120,7 @@ def send_dth22_info():
         print(f"emitiendo data de sensor: {data}")
         emit('sensor1_setter', data, broadcast=True)
         time.sleep(4)
+
 
 @socketIo.on('activate_user')
 def on_active_user(data):
