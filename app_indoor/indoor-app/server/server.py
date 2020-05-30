@@ -118,7 +118,7 @@ def send_dth22_info():
         temp, humd = Sensor1.read_values(save=True)
         data = {'temperature': float("{:.2f}".format(temp)), 'humidity': float("{:.2f}".format(humd))}
         print(f"emitiendo data de sensor: {data}")
-        emit('sensor1_setter', data, broadcast=True)
+        socketIo.emit('sensor1_setter', data, broadcast=True)
         time.sleep(4)
 
 
