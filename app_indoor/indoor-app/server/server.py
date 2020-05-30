@@ -115,7 +115,7 @@ def retrieve_active_users():
 def send_dth22_info():
     """Example of how to send server generated events to clients."""
     while True:
-        temp, humd = Sensor1.read_values()
+        temp, humd = Sensor1.read_values(save=True)
         data = {'temperature': float("{:.2f}".format(temp)), 'humidity': float("{:.2f}".format(humd))}
         print(f"emitiendo data de sensor: {data}")
         emit('sensor1_setter', data, broadcast=True)
