@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Carousel} from 'react-bootstrap';
+import {Carousel, Col} from 'react-bootstrap';
 import header_img from './images/header_img.jpg'
 import imagen_1 from './images/2.jpg'
 import imagen_2 from './images/3.jpg'
@@ -19,9 +19,10 @@ class CarouselImg extends Component  {
     render(){
 
     return (
+      <Col md="auto">
       <Carousel activeIndex={this.index} onSelect={this.handleSelect}>
         <Carousel.Item>
-          <img width={900} height={400} alt="900x400"
+          <img width={780} height={325} alt="780x325"
             className="d-block w-100"
             src={header_img}
             alt="First slide"
@@ -32,7 +33,7 @@ class CarouselImg extends Component  {
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-          <img width={900} height={400} alt="900x400"
+          <img width={780} height={325} alt="780x325"
             className="d-block w-100"
             src={imagen_2}
             alt="Second slide"
@@ -44,7 +45,7 @@ class CarouselImg extends Component  {
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-          <img width={900} height={400} alt="900x400"
+          <img width={800} height={300} alt="800x300"
             className="d-block w-100"
             src={imagen_1}
             alt="Third slide"
@@ -58,10 +59,10 @@ class CarouselImg extends Component  {
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-          <img width={900} height={400} alt="900x400"
+          <img width={780} height={325} alt="780x325"
             className="d-block w-100"
             src={imagen_3}
-            alt="First slide"
+            alt= "Fourth slide"
           />
           <Carousel.Caption>
             <h3>First slide label</h3>
@@ -69,10 +70,10 @@ class CarouselImg extends Component  {
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-          <img width={900} height={400} alt="900x400"
+          <img width={800} height={300} alt="800x300"
             className="d-block w-100"
             src={imagen_4}
-            alt="First slide"
+            alt="Five slide"
           />
           <Carousel.Caption>
             <h3>First slide label</h3>
@@ -80,10 +81,10 @@ class CarouselImg extends Component  {
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-          <img width={900} height={400} alt="900x400"
+          <img width={800} height={300} alt="800x300"
             className="d-block w-100"
             src={imagen_5}
-            alt="First slide"
+            alt="Six slide"
           />
           <Carousel.Caption>
             <h3>First slide label</h3>
@@ -91,10 +92,10 @@ class CarouselImg extends Component  {
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
-          <img width={900} height={400} alt="900x400"
+          <img width={800} height={300} alt="800x300"
             className="d-block w-100"
             src={imagen_6}
-            alt="First slide"
+            alt="seven slide"
           />
           <Carousel.Caption>
             <h3>First slide label</h3>
@@ -103,6 +104,7 @@ class CarouselImg extends Component  {
         </Carousel.Item>
         
       </Carousel>
+      </Col>
     );
   }
 }

@@ -1,0 +1,149 @@
+select * from public.germination_type
+
+select * from public.stage
+select * from public.planting_technique
+select * from public.plant;
+select * from public.plant_history
+select * from public.plant_user
+
+insert into public.germination_type values ('sustrato de coco', 'La germinacion va directo en el sustrato de coco, mantener el sustrato humedo, en un lugar calido 21 °C y preferiblemente en la oscuridad durante los primeros dias tiempo aproximado de germinacion 1 semana')
+insert into public.plant_user (name, nit, username, password) values ('Ricaardo Osorio', '420', 'Ricardo', 'secret')
+alter table public.plant
+drop
+rename column fecha_germinacion to fecha_ingreso
+delete from public.plant_user where id =1 
+alter table public."GERMINATION_TYPE"
+add column id serial primary key not null
+
+
+insert into public."GERMINATION_TYPE" (name, comments) values ('Plantula','Durante este momento, las raíces comienzan a desarrollarse y las hojas se multiplican y se extienden, a la vez que la planta comienza a ganar altura. Este será el primer ciclo de vida de la marihuana de crecimiento verdadero. A partir de aquí, la planta seguirá creciendo hasta comenzar a brotar flores.')
+insert into public.stage values ('Semilla', '..')
+
+truncate table public."GERMINATION_TYPE" restart identity
+
+create table PLANT_USER (
+id Serial primary key not null,
+	name varchar(50),
+	nit varchar(30),
+	username varchar(100),
+	password varchar(100)
+)
+
+alter table public.plant
+add constraint FKplant_user
+foreign key(plants_user_id)
+references public.plant_user (id)
+
+alter table public.plant
+add column plants_user_id integer
+
+add column volumen_matera integer
+add column sustrato varchar(30)
+
+
+
+add column id serial primary key not null,
+add column metadata text 
+
+
+alter table public."STAGE"
+alter column name type varchar(30)
+
+add column id serial primary key not null
+
+
+
+insert into public."STAGE" (name, comments) values ('Cosecha','..')
+
+
+create table PLANTING_TECHNIQUE (
+id serial primary key not null,
+	name varchar(30),
+	comments text
+)
+
+insert into public.planting_technique (name, comments) values ('Esqueje','..')
+
+
+-- Trigers (disparadores)
+create table PLANT_HISTORY (
+id serial primary key not null,
+	seed_bank boolean,
+	comments text,
+	start_date date,
+	plant_id integer,
+	metadata text,
+	substrate varchar(30),
+	matera_size integer,
+	germination_type_id integer,
+	planting_technique_id integer,
+	stage_id integer,
+	user_system varchar(250), 
+	date date,
+	time Time
+)
+
+alter table public.plant_history
+add column plant_user_id integer
+
+create function SP_PlantHistory() returns Trigger
+as
+$$
+Declare
+Usuario varchar(250) := User;
+Fecha date := current_date;
+Tiempo Time := current_Time;
+
+
+begin
+
+insert into public.plant_history values (old.banco, old.comentario, old.fecha_ingreso, old.id, old.metadata, old.sustrato, old.volumen_matera, old.germination_type_id, old.planting_technique_id, old.stage_id, Usuario, Fecha, Tiempo, old.plants_user_id);
+return new;
+
+
+ENd
+$$
+Language plpgsql
+
+
+create trigger TG_PlantInsert after Insert on public.plant
+for each row
+execute procedure SP_PlantHistory();
+
+
+--Insert PLant
+alter table public.plant_history
+alter column matera_size type float
+delete from public.plant where id = 1
+insert into public.plant_history (seed_bank, comments, start_date, plant_id, metadata, substrate, matera_size, germination_type_id, planting_technique_id, stage_id, user_system, date, time, plant_user_id) values (old.banco, old.comentario, old.fecha_ingreso, old.id, old.metadata, old.sustrato, old.volumen_matera, old.germination_type_id, old.planting_technique_id, old.stage_id, Usuario, Fecha, Tiempo, old.plants_user_id);
+Update public.plant set
+comentario = 'Transplante',
+sustrato = 'Biointegral Plus',
+volumen_matera = 2.5
+where id = 3
+
+
+
+
+create or replace function get_plant_status(plant_id_p integer) returns table(banco bool, last_comment text, germination_date date, metadata text, substrate varchar(30), matera_size float, germination_type_id integer, germination_type varchar(20), planting_technique_id integer, planting_technique varchar(30), stage_id integer, stage varchar(30), plants_user_id integer, user_plant varchar(50))
+as
+$$
+begin
+return query select a1.banco, a1.comentario as last_comment, a1.fecha_ingreso as germination_date, a1.metadata,  a1.sustrato as substrate,  a1.volumen_matera as matera_size,  a1.germination_type_id, c1.name as germination_type,  a1.planting_technique_id, d1.name as planting_technique,  a1.stage_id, b2.name as stage, a1.plants_user_id, e1.name as user_plant   from public.plant as a1
+Inner Join public.stage b2
+On a1.stage_id = b2.id
+Inner Join public.germination_type c1
+On a1.germination_type_id = c1.id
+Inner Join public.planting_technique d1
+On a1.planting_technique_id = d1.id
+Inner Join public.plant_user e1
+On a1.plants_user_id = e1.id
+where a1.id = plant_id_p;
+
+End
+$$
+Language plpgsql
+
+
+select * from public.get_plant_status(3)
+

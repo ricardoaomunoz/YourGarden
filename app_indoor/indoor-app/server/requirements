@@ -23,3 +23,11 @@ setup(
         'eventlet',
     ],
 )
+
+----- DB postgres with SQAclhemy -----
+python3 -m pip install psycopg2==2.8.4 Flask-SQLAlchemy===2.4.1 Flask-Migrate==2.5.2
+python3 -m pip freeze > requirements.txt
+
+
+export DATABASE_URL="postgresql://admin:secret@localhost:5432/IndoorClub"
+export APP_SETTINGS="config.DevelopmentConfig"

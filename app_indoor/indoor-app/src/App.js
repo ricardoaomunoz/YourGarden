@@ -14,6 +14,7 @@ import Home from './components/Home'
 import TimeSetter from './components/TimeSetter'
 import Carousel from './components/CarouselImg'
 import Sensors from './components/Sensors'
+import RegisterPlant from './RegisterPlant'
 
 const username = prompt("What is your username");
 
@@ -111,25 +112,36 @@ class App extends Component{
     render(){
       const {userName, users, turnOn, turnOff, automatic, temperature, humidity} = this.state
       return (
-        <Container className='App'>
-          <Row className="justify-content-md-center">
+      
+        <Container fluid="sm">
+          <Row  >
             <Col>
-              <Navbar bg="primary" varinat="dark">
-                <Navbar.Brand href=""> IndoorCLub </Navbar.Brand>
-                <Nav className="ml-auto">
-                  <Nav.Link href="">Home</Nav.Link>
-                  {/* <Nav.Link href={Timer}>Timer</Nav.Link> */}
+            <Router>
+              <Navbar bg="primary" varinat="dark" expand="lg" sticky="top">
+                <Navbar.Brand href="#home"> IndoorCLub </Navbar.Brand>
+                <Nav>
+                  <Nav.Link href="/">Home</Nav.Link>
+                  <Nav.Link href="/RegisterPlant" >Register Plant</Nav.Link>
                 </Nav>
               </Navbar>
+              <Switch>
+                <Route exact path="/RegisterPlant"><RegisterPlant /></Route>
+
+              </Switch>
+            </Router>
             </Col>
           </Row>
           <Row className="justify-content-md-center">
-            <Col>
+            
               <Carousel />
+          </Row>
+          <Row>
+            <Col>
+              {/* <Carousel /> */}
               {/* <Image src={header_img} fluid /> */}
             </Col>
           </Row>
-          <Row className="justify-content-md-center">
+          <Row >
             <Col>
               <Home
                 userName={userName}
