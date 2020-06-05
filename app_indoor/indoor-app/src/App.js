@@ -1,22 +1,16 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import io from 'socket.io-client'
-import logo from './logo.svg';
 import {Container, Row, Col, Navbar, Nav, Image} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import  { Timer }  from './components/SetTimer';
-import { NoMatch } from './NoMatch';
-import { render } from '@testing-library/react';
-import { ThemeContext } from 'styled-components';
-// import header_img from './components/images/header_img.jpg'
+
 import Home from './components/Home'
 import TimeSetter from './components/TimeSetter'
 import Carousel from './components/CarouselImg'
 import Sensors from './components/Sensors'
 import RegisterPlant from './RegisterPlant'
+import DashBoard from './DashBoard'
 
-const username = prompt("What is your username");
+// const username = prompt("What is your username");
 
 // const socket = io("http://localhost:5010", {
 //   transports: ["websocket", "polling"]
@@ -33,7 +27,7 @@ class App extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      userName: username,
+      userName: "Ricardo",
       automatic: true,
       turnOn: "",
       turnOff: "",
@@ -112,58 +106,59 @@ class App extends Component{
     render(){
       const {userName, users, turnOn, turnOff, automatic, temperature, humidity} = this.state
       return (
+        <DashBoard />
       
-        <Container fluid="sm">
-          <Row  >
-            <Col>
-            <Router>
-              <Navbar bg="primary" varinat="dark" expand="lg" sticky="top">
-                <Navbar.Brand href="#home"> IndoorCLub </Navbar.Brand>
-                <Nav>
-                  <Nav.Link href="/">Home</Nav.Link>
-                  <Nav.Link href="/RegisterPlant" >Register Plant</Nav.Link>
-                </Nav>
-              </Navbar>
-              <Switch>
-                <Route exact path="/RegisterPlant"><RegisterPlant /></Route>
+        // <Container fluid="sm">
+        //   <Row  >
+        //     <Col>
+        //     <Router>
+        //       <Navbar bg="primary" varinat="dark" expand="lg" sticky="top">
+        //         <Navbar.Brand href="#home"> IndoorCLub </Navbar.Brand>
+        //         <Nav>
+        //           <Nav.Link href="/">Home</Nav.Link>
+        //           <Nav.Link href="/RegisterPlant" >Register Plant</Nav.Link>
+        //         </Nav>
+        //       </Navbar>
+        //       <Switch>
+        //         <Route exact path="/RegisterPlant"><RegisterPlant /></Route>
 
-              </Switch>
-            </Router>
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center">
+        //       </Switch>
+        //     </Router>
+        //     </Col>
+        //   </Row>
+        //   <Row className="justify-content-md-center">
             
-              <Carousel />
-          </Row>
-          <Row>
-            <Col>
-              {/* <Carousel /> */}
-              {/* <Image src={header_img} fluid /> */}
-            </Col>
-          </Row>
-          <Row >
-            <Col>
-              <Home
-                userName={userName}
-                users={users}/>
-            </Col>
-          </Row>
-          <Row>
-            <TimeSetter 
-              turnOff= {turnOff}
-              turnOn= {turnOn}
-              automatic = {automatic}
-              setTime={this.setTime}
-            />
-            <Sensors 
-              temperature={temperature}
-              humidity={humidity}
-              />
-          </Row>
-          <br></br>
-          <br></br>
-          <br></br>
-        </Container>
+        //       <Carousel />
+        //   </Row>
+        //   <Row>
+        //     <Col>
+        //       {/* <Carousel /> */}
+        //       {/* <Image src={header_img} fluid /> */}
+        //     </Col>
+        //   </Row>
+        //   <Row >
+        //     <Col>
+        //       <Home
+        //         userName={userName}
+        //         users={users}/>
+        //     </Col>
+        //   </Row>
+        //   <Row>
+        //     <TimeSetter 
+        //       turnOff= {turnOff}
+        //       turnOn= {turnOn}
+        //       automatic = {automatic}
+        //       setTime={this.setTime}
+        //     />
+        //     <Sensors 
+        //       temperature={temperature}
+        //       humidity={humidity}
+        //       />
+        //   </Row>
+        //   <br></br>
+        //   <br></br>
+        //   <br></br>
+        // </Container>
 
       
 
