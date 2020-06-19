@@ -147,3 +147,56 @@ Language plpgsql
 
 select * from public.get_plant_status(3)
 
+
+
+create table GROWING (
+id serial primary key not null,
+	name varchar(30),
+	plants_user_id integer
+);
+	
+create table PERIPHERALS (
+id serial primary key not null, 
+	name varchar(30) not null,
+	state bool not null,
+	growing_id integer not null
+	
+);
+	
+create table SENSORS (
+	id serial primary key not null,
+	name varchar(30) not null,
+	value integer not null, 
+	unit varchar(20) not null,
+	growing_id integer not null
+);
+	
+alter table public.plant 
+add column growing_id integer default null;
+
+
+alter table public.growing 
+add constraint fk_id_user foreign key(plants_user_id)
+references public.plant_user(id)
+on delete cascade on update cascade;
+
+
+alter table public.sensors 
+add constraint fk_id_growing_sensors foreign key(growing_id)
+references public.growing(id)
+on delete cascade on update cascade;
+
+
+alter table public.peripherals 
+add constraint fk_id_growing_peripherals foreign key(growing_id)
+references public.growing(id)
+on delete cascade on update cascade;
+
+alter table public.plant 
+add constraint fk_id_growing_plants foreign key(growing_id)
+references public.growing(id)
+on delete cascade on update cascade;
+
+
+ALTER TABLE public.plant
+    ADD COLUMN nikname varchar(30);

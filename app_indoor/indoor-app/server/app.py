@@ -33,6 +33,8 @@ elif async_mode == 'gevent':
 
 
 from flask import Flask, session#, jsonify, request, session
+from flask_bcrypt import Bcrypt
+from flask_cors import CORS
 from flask_socketio import SocketIO, send, emit
 import json
 from threading import Thread
@@ -43,6 +45,8 @@ import datetime
 from flask_sqlalchemy import SQLAlchemy
 import os
 app = Flask(__name__)
+CORS(app)
+bcrypt = Bcrypt(app)
 app.config['SECRET_KEY'] = 'mysecret'
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

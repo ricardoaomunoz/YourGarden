@@ -30,4 +30,9 @@ python3 -m pip freeze > requirements.txt
 
 
 export DATABASE_URL="postgresql://admin:secret@localhost:5432/IndoorClub"
+
+export DATABASE_URL="postgresql://admin:secret@localhost:5432/GrowingClub"
 export APP_SETTINGS="config.DevelopmentConfig"
+
+
+flask-sqlacodegen --flask --outfile models.py postgresql://admin:secret@localhost:5432/IndoorClub

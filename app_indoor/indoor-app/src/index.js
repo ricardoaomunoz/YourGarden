@@ -1,12 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import Login from './components/login/index'
+import user from './redux/users'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+
+const Root = (
+  <Provider store={user}>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/login" component={Login}></Route>
+        <Redirect from="/" to="/login" />
+      </Switch>
+    </BrowserRouter>
+  </Provider>
+
+)
+ReactDOM.render(Root, document.getElementById('root'));
 

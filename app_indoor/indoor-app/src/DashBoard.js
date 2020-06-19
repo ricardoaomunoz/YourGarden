@@ -8,6 +8,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import  { mainListItems }  from './components/ListItems';
 import TimmeSetter from './components/TimeSetter'
+import ShowPlants from './components/ShowPlants'
 
 
 function Copyright() {
@@ -156,11 +157,11 @@ function Copyright() {
                         turnOn= {"06:00"} />
                       </Paper>
                     </Grid>
-                    {/* Recent Orders */}
+                    {/* Plants */}
                     <Grid item xs={12}>
-                      {/* <Paper className={classes.paper}>
-                        <Orders />
-                      </Paper> */}
+                      <Paper className={classes.paper}>
+                        <ShowPlants />
+                      </Paper>
                     </Grid>
                   </Grid>
                   <Box pt={4}>
